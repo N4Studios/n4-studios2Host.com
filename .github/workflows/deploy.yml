@@ -53,6 +53,12 @@ jobs:
           repository: N4Studios/SEMAG
           path: Projects/SEMAG
 
+      - name: Checkout ColorLand5
+        uses: actions/checkout@v7
+        with:
+          repository: N4Studios/ColorLand5
+          path: Projects/ColorLand5
+
       # 3. Assemble Website
       - name: Assemble Website
         run: |
@@ -87,6 +93,14 @@ jobs:
             --exclude='.github/' \
             Projects/SEMAG/ \
             _site/Projects/SEMAG/
+
+          # Copy ColorLand5
+          mkdir -p _site/Projects/ColorLand5
+          rsync -a \
+            --exclude='.git/' \
+            --exclude='.github/' \
+            Projects/ColorLand5/ \
+            _site/Projects/ColorLand5/
 
           touch _site/.nojekyll
 
