@@ -35,17 +35,17 @@ jobs:
 
       # 2. Download secondary repositories
 
-      - name: Checkout TransferStatusCheck
+      - name: Checkout ComputerSimulator
         uses: actions/checkout@v7
         with:
-          repository: N4Studios/Transfer-Status-Check
-          path: Projects/TransferStatusCheck
+          repository: N4Studios/ComputerSimulator
+          path: Projects/ComputerSimulator
 
       - name: Checkout Spinner
         uses: actions/checkout@v7
         with:
-          repository: N4Studios/Spinner
-          path: Projects/Spinner
+          repository: N4Studios/n4studios
+          path: Projects/blog/BeginnersStart
 
       - name: Checkout SEMAG
         uses: actions/checkout@v7
@@ -64,21 +64,21 @@ jobs:
             --exclude='.github/' \
             main/ _site/
 
-          # Copy TransferStatusCheck
-          mkdir -p _site/Projects/TransferStatusCheck
+          # Copy ComputerSimulator
+          mkdir -p _site/Projects/ComputerSimulator
           rsync -a \
             --exclude='.git/' \
             --exclude='.github/' \
-            Projects/TransferStatusCheck/ \
-            _site/Projects/TransferStatusCheck/
+            Projects/ComputerSimulator/ \
+            _site/Projects/ComputerSimulator/
 
           # Copy Spinner
-          mkdir -p _site/Projects/Spinner
+          mkdir -p _site/Projects/BeginnersStart
           rsync -a \
             --exclude='.git/' \
             --exclude='.github/' \
-            Projects/Spinner/ \
-            _site/Projects/Spinner/
+            Projects/BeginnersStart/ \
+            _site/Projects/BeginnersStart/
 
           # Copy SEMAG
           mkdir -p _site/Projects/SEMAG
