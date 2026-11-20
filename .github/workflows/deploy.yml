@@ -44,8 +44,8 @@ jobs:
       - name: Checkout Spinner
         uses: actions/checkout@v7
         with:
-          repository: N4Studios/n4studios
-          path: Projects/blog/BeginnersStart
+          repository: N4Studios/BeginnersStart
+          path: Projects/BeginnersStart
 
       - name: Checkout SEMAG
         uses: actions/checkout@v7
@@ -73,12 +73,12 @@ jobs:
             _site/Projects/ComputerSimulator/
 
           # Copy BeginnersStart
-          mkdir -p _site/Projects/blog/BeginnersStart
+          mkdir -p _site/Projects/BeginnersStart
           rsync -a \
             --exclude='.git/' \
             --exclude='.github/' \
-            Projects/blog/BeginnersStart/ \
-            _site/Projects/blog/BeginnersStart/
+            Projects/BeginnersStart/ \
+            _site/Projects/BeginnersStart/
 
           # Copy SEMAG
           mkdir -p _site/Projects/SEMAG
