@@ -41,7 +41,7 @@ jobs:
           repository: N4Studios/ComputerSimulator
           path: Projects/ComputerSimulator
 
-      - name: Checkout Spinner
+      - name: Checkout BeginnersStart
         uses: actions/checkout@v7
         with:
           repository: N4Studios/BeginnersStart
