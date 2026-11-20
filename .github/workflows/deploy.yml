@@ -1,0 +1,106 @@
+
+name: Deploy Main Website
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+  schedule:
+    - cron: "*/15 * * * *"
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      # 1. Download the main website repository
+      - name: Checkout Main Website
+        uses: actions/checkout@v7
+        with:
+          path: main
+
+      # 2. Download secondary repositories
+
+      - name: Checkout TransferStatusCheck
+        uses: actions/checkout@v7
+        with:
+          repository: N4Studios/Transfer-Status-Check
+          path: Projects/TransferStatusCheck
+
+      - name: Checkout Spinner
+        uses: actions/checkout@v7
+        with:
+          repository: N4Studios/Spinner
+          path: Projects/Spinner
+
+      - name: Checkout SEMAG
+        uses: actions/checkout@v7
+        with:
+          repository: N4Studios/SEMAG
+          path: Projects/SEMAG
+
+      # 3. Assemble Website
+      - name: Assemble Website
+        run: |
+          mkdir -p _site
+
+          # Copy main website
+          rsync -a \
+            --exclude='.git/' \
+            --exclude='.github/' \
+            main/ _site/
+
+          # Copy TransferStatusCheck
+          mkdir -p _site/Projects/TransferStatusCheck
+          rsync -a \
+            --exclude='.git/' \
+            --exclude='.github/' \
+            Projects/TransferStatusCheck/ \
+            _site/Projects/TransferStatusCheck/
+
+          # Copy Spinner
+          mkdir -p _site/Projects/Spinner
+          rsync -a \
+            --exclude='.git/' \
+            --exclude='.github/' \
+            Projects/Spinner/ \
+            _site/Projects/Spinner/
+
+          # Copy SEMAG
+          mkdir -p _site/Projects/SEMAG
+          rsync -a \
+            --exclude='.git/' \
+            --exclude='.github/' \
+            Projects/SEMAG/ \
+            _site/Projects/SEMAG/
+
+          touch _site/.nojekyll
+
+      # 4. Configure GitHub Pages
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      # 5. Upload assembled website
+      - name: Upload Website
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+
+      # 6. Deploy Website
+      - name: Deploy Website
+        id: deployment
+        uses: actions/deploy-pages@v4
